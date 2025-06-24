@@ -1,3 +1,15 @@
 def call(Map config = [:]) {
-    sh "echo Hello ${config.name}. Today is ${config.dayOfWeek}."
+    wrap([$class: 'ServerBuildWrapper',
+          secrets: [
+            [
+              id: ${config.id}.,
+              baseUrl: '',
+              credentialId: env.SECRET_SERVER_CRED,
+              mappings: [
+                [field: 'Username', environmentVariable: 'username'],
+                [field: 'Password', environmentVariable: 'password']
+              ]
+            ]
+          ]
+        ])
 }
