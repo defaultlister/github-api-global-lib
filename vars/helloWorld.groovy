@@ -1,4 +1,4 @@
-def call(Map config = [:]) {
+def call(Map config = [:], Closure body = null) {
     wrap([$class: 'ServerBuildWrapper',
           secrets: [
             [
@@ -11,5 +11,9 @@ def call(Map config = [:]) {
               ]
             ]
           ]
-        ])
+    ]) {
+        if (body != null) {
+            body()
+        }
+    }
 }
