@@ -2,7 +2,7 @@ def call(Map config = [:]) {
     wrap([$class: 'ServerBuildWrapper',
           secrets: [
             [
-              id: ${config.id}. ,
+              id: config.id,
               baseUrl: '',
               credentialId: env.SECRET_SERVER_CRED,
               mappings: [
