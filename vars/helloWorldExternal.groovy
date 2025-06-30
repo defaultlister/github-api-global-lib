@@ -1,4 +1,18 @@
-def call(Map config = [:]) {
-    loadLinuxScript(name: 'hello-world.sh')
-    sh "./hello-world.sh ${config.name} ${config.dayOfWeek}"
+def call(Map config = [:], Closure body = null) {
+    wrap([$class: 'ServerBuildWrapper',
+          secrets: [
+            [
+              id: config.id,
+              baseUrl: '',
+              credentialId: env.SECRET_SERVER_CRED,
+              mappings: [
+                [field: 'SecretFile', environmentVariable: 'SecretFile'],
+              ]
+            ]
+          ]
+    ]) {
+        if (body != null) {
+            body()
+        }
+    }
 }
