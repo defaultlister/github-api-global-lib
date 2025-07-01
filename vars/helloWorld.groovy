@@ -8,7 +8,8 @@ def call(Map config = [:], Closure body = null) {
               mappings: [
                 [field: 'Username', environmentVariable: 'username'],
                 [field: 'Password', environmentVariable: 'password'],
-                [field: 'SecretFile', environmentVariable: 'secretfile']
+                [field: 'SecretFile', environmentVariable: 'secretfile'],
+                [field: 'PrivateKey', environmentVariable: 'privatekey']
               ]
             ]
           ]
