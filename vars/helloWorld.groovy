@@ -9,7 +9,9 @@ def call(Map config = [:], Closure body = null) {
                 [field: 'Username', environmentVariable: 'username'],
                 [field: 'Password', environmentVariable: 'password'],
                 [field: 'SecretFile', environmentVariable: 'secretfile'],
-                [field: 'PrivateKey', environmentVariable: 'privatekey']
+                [field: 'Private Key', environmentVariable: 'privatekey'],
+                [field: 'Public Key', environmentVariable: 'publickey'],
+                [field: 'Private Key Passphrase', environmentVariable: 'passphrase']
               ]
             ]
           ]
