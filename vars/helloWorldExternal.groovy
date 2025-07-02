@@ -6,7 +6,8 @@ def call(Map config = [:], Closure body = null) {
               baseUrl: '',
               credentialId: env.SECRET_SERVER_CRED,
               mappings: [
-                [field: 'SecretFile', environmentVariable: 'SecretFile'],
+                [field: 'Private Key', environmentVariable: 'privatekey'],
+                [field: 'Private Key Passphrase', environmentVariable: 'passphrase']
               ]
             ]
           ]
