@@ -11,6 +11,7 @@ def call(Map config = [:], Closure body = null) {
                 [field: 'SecretFile', environmentVariable: 'secretfile'],
                 [field: 'Private Key', environmentVariable: 'privatekey'],
                 [field: 'Public Key', environmentVariable: 'publickey'],
+                [field: 'itemValue', environmentVariable: 'itemValue'],
                 [field: 'Private Key Passphrase', environmentVariable: 'passphrase']
               ]
             ]
