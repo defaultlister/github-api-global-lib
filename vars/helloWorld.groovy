@@ -1,5 +1,5 @@
 def call(Map config = [:], Closure body = null) {
-    def prefix = config.prefix ?: "SECRET"
+    def prefix = config.prefix ?: ""
 
     wrap([$class: 'ServerBuildWrapper',
           secrets: [[
