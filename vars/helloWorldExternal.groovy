@@ -1,21 +1,31 @@
-def call(Map config = [:], Closure body = null) {
-    def prefix = config.prefix ?: "SECRET"
+def call(List<Map> secretsList = [], Closure body) {
+    if (!secretsList || !(secretsList instanceof List)) {
+        error("Expected a list of secrets with at least one entry (each with 'id' and 'prefix').")
+    }
 
-    wrap([$class: 'ServerBuildWrapper',
-          secrets: [[
-              id: config.id,
-              baseUrl: '',
-              credentialId: env.SECRET_SERVER_CRED,
-              mappings: [
-                [field: 'Username', environmentVariable: "${prefix}_username"],
-                [field: 'Password', environmentVariable: "${prefix}_password"],
-                [field: 'SecretFile', environmentVariable: "${prefix}_file"],
-                [field: 'itemValue', environmentVariable: "${prefix}_item"]
-              ]
-          ]]
-    ]) {
-        if (body != null) {
-            body()
+    def secrets = secretsList.collect { entry ->
+        if (!entry.id || !entry.prefix) {
+            error("Each secret must have 'id' and 'prefix' defined.")
         }
+
+        def vaultUrl = entry.get('vaultUrl', 'https://your.delinea.secretserver')
+        def credentialId = entry.get('credentialId', 'delinea_jenkins')
+        def fieldSlugs = entry.get('fieldSlugs', ['Username', 'Password'])
+
+        def mappings = fieldSlugs.collect { field ->
+            [field: field, environmentVariable: "${entry.prefix}_${field.toUpperCase()}"]
+        }
+
+        return [
+            id          : entry.id,
+            vaultUrl    : vaultUrl,
+            credentialId: credentialId,
+            fieldSlugs  : fieldSlugs,
+            mappings    : mappings
+        ]
+    }
+
+    wrap([$class: 'ServerBuildWrapper', secrets: secrets]) {
+        body()
     }
 }
