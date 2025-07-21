@@ -1,6 +1,6 @@
 def call(List<Map> secretsList = [], Closure body) {
-    if (!secretsList) {
-        error("Expected a non-empty list of secrets.")
+    if (!secretsList || !(secretsList instanceof List)) {
+        error("Expected a list of secrets with 'id' (Integer) and 'prefix'.")
     }
 
     def secrets = secretsList.collect { entry ->
@@ -17,7 +17,7 @@ def call(List<Map> secretsList = [], Closure body) {
 
         def mappings = fields.collect { field ->
             [
-                field: field,
+                field              : field,
                 environmentVariable: "${entry.prefix}_${field.toUpperCase()}"
             ]
         }
