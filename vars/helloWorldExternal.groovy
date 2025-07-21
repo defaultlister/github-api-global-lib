@@ -1,6 +1,8 @@
+// File: vars/helloWorldExternal.groovy
+
 def call(List<Map> secretsList = [], Closure body) {
-    if (!secretsList || !(secretsList instanceof List)) {
-        error("Expected a list of secrets with 'id' (Integer) and 'prefix'.")
+    if (!secretsList) {
+        error("Expected a non-empty list of secrets.")
     }
 
     def secrets = secretsList.collect { entry ->
@@ -17,7 +19,7 @@ def call(List<Map> secretsList = [], Closure body) {
 
         def mappings = fields.collect { field ->
             [
-                field              : field,
+                field: field,
                 environmentVariable: "${entry.prefix}_${field.toUpperCase()}"
             ]
         }
@@ -30,7 +32,10 @@ def call(List<Map> secretsList = [], Closure body) {
         ]
     }
 
-    wrap([$class: 'com.delinea.secrets.jenkins.wrapper.cred.ServerBuildWrapper', secrets: secrets]) {
+    wrap([
+        $class : 'com.delinea.secrets.jenkins.wrapper.cred.ServerBuildWrapper',
+        secrets: secrets
+    ]) {
         body()
     }
 }
